@@ -150,7 +150,7 @@ class Tipsport:
     def get_stream(self, relative_url):
         """Get instance of Stream class from given relative link"""
         self._relogin_if_needed()
-        self._check_alert_message_and_throw_exception()
+        """self._check_alert_message_and_throw_exception()"""
         strategy = self.stream_strategy_factory.get_stream_strategy(relative_url)
         try:
             stream = strategy.get_stream()
@@ -174,24 +174,24 @@ class Tipsport:
             raise Exceptions.UnableGetStreamListException()
         return response
 
-    def _check_alert_message_and_throw_exception(self):
-        """
-        Return any alert message from Tipsport (like bet request)
-        Return None if everything is OK
-        """
-        page = self.session.get(self.user_data.site_mobile + '/rest/articles/v1/tv/info')
-        name = 'buttonDescription'
-        try:
-            data = json.loads(page.text)
-            if name not in data:
-                raise Exceptions.TipsportMsg()
-            text = data[name]
-            if text is None:
-                return None
-            raise Exceptions.TipsportMsg(text.split('.')[0] + '.')
-        except TypeError:
-            log('Unable to get Tipsport alert message')
-            raise Exceptions.UnableGetStreamMetadataException()
+    # def _check_alert_message_and_throw_exception(self):
+    #    """
+    #     Return any alert message from Tipsport (like bet request)
+    #     Return None if everything is OK
+    #     """
+    #     page = self.session.get(self.user_data.site_mobile + '/rest/articles/v1/tv/info')
+    #     name = 'buttonDescription'
+    #     try:
+    #         data = json.loads(page.text)
+    #         if name not in data:
+    #             raise Exceptions.TipsportMsg()
+    #         text = data[name]
+    #         if text is None:
+    #             return None
+    #         raise Exceptions.TipsportMsg(text.split('.')[0] + '.')
+    #     except TypeError:
+    #         log('Unable to get Tipsport alert message')
+    #         raise Exceptions.UnableGetStreamMetadataException()
 
 
 def get_stream_number(relative_url):
